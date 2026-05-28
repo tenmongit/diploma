@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Optional
 
 from app.db.database import get_db
-from app.db.models import Host, Vendor, Service, Vulnerability
+from app.db.models import Host, Vendor, Service, Vulnerability, SeverityLevel
 from app.core.security import get_current_user
 from app.schemas.schemas import HostOut, HostDetail
 
@@ -18,6 +18,7 @@ router = APIRouter(prefix="/api/hosts", tags=["Hosts"])
 async def list_hosts(
     vendor_id: Optional[int] = Query(None),
     scan_job_id: Optional[int] = Query(None),
+    severity: Optional[str] = Query(None),
     search: Optional[str] = Query(None),
     limit: int = Query(100, le=500),
     offset: int = Query(0, ge=0),
@@ -35,6 +36,12 @@ async def list_hosts(
         query = query.where(Host.vendor_id == vendor_id)
     if scan_job_id is not None:
         query = query.where(Host.scan_job_id == scan_job_id)
+    if severity:
+        try:
+            sev = SeverityLevel(severity.lower())
+            query = query.where(Host.vulnerabilities.any(Vulnerability.severity == sev))
+        except ValueError:
+            pass
     if search:
         query = query.where(
             Host.ip_address.ilike(f"%{search}%") | Host.domain.ilike(f"%{search}%")

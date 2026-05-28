@@ -8,7 +8,6 @@ const SEVERITY_COLORS = {
   medium: '#f59e0b',
   low: '#10b981',
   default: '#3b82f6',
-  demo: '#8b5cf6',
 };
 
 const SEVERITY_RADIUS = {
@@ -78,7 +77,7 @@ export default function MapPage() {
             </p>
           </div>
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-            {Object.entries(SEVERITY_COLORS).filter(([k]) => k !== 'default' && k !== 'demo').map(([label, color]) => (
+            {Object.entries(SEVERITY_COLORS).filter(([k]) => k !== 'default').map(([label, color]) => (
               <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <div style={{
                   width: 10, height: 10, borderRadius: '50%',
@@ -87,13 +86,6 @@ export default function MapPage() {
                 <span className="text-sm text-muted" style={{ textTransform: 'capitalize' }}>{label}</span>
               </div>
             ))}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <div style={{
-                width: 10, height: 10, borderRadius: '50%',
-                background: SEVERITY_COLORS.demo, boxShadow: `0 0 6px ${SEVERITY_COLORS.demo}`,
-              }} />
-              <span className="text-sm text-muted">Demo</span>
-            </div>
           </div>
         </div>
       </div>
@@ -112,8 +104,7 @@ export default function MapPage() {
             />
             {mappableHosts.map((host) => {
               const severity = host.max_severity || 'default';
-              const isDemo = host.geolocation?.is_demo || host.geolocation?.evidence_type === 'demo';
-              const color = isDemo ? SEVERITY_COLORS.demo : (SEVERITY_COLORS[severity] || SEVERITY_COLORS.default);
+              const color = SEVERITY_COLORS[severity] || SEVERITY_COLORS.default;
               const radius = SEVERITY_RADIUS[severity] || SEVERITY_RADIUS.default;
 
               return (
@@ -127,16 +118,12 @@ export default function MapPage() {
                     fillOpacity: 0.6,
                     weight: 2,
                     opacity: 0.8,
-                    dashArray: isDemo ? '6 4' : null,
                   }}
                 >
                   <Popup>
                     <div>
                       <div className="popup-title">
                         {host.ip_address}
-                        <span className={`scan-mode-badge ${isDemo ? 'demo' : 'real'}`}>
-                          {isDemo ? 'DEMO' : 'REAL'}
-                        </span>
                       </div>
                       <div className="popup-row">
                         <span className="label">Domain:</span>
@@ -149,10 +136,6 @@ export default function MapPage() {
                       <div className="popup-row">
                         <span className="label">Location:</span>
                         <span>{host.geolocation.city || '—'}, {host.geolocation.country || ''}</span>
-                      </div>
-                      <div className="popup-row">
-                        <span className="label">Evidence:</span>
-                        <span>{isDemo ? 'Synthetic defense dataset' : 'Passive OSINT result'}</span>
                       </div>
                       <div className="popup-row">
                         <span className="label">Scan:</span>
@@ -200,7 +183,6 @@ export default function MapPage() {
                 <th>IP Address</th>
                 <th>Domain</th>
                 <th>Vendor</th>
-                <th>Evidence</th>
                 <th>Scan</th>
                 <th>Appeared</th>
                 <th>Vulns</th>
@@ -209,32 +191,24 @@ export default function MapPage() {
               </tr>
             </thead>
             <tbody>
-              {mappableHosts.map((h) => {
-                const isDemo = h.geolocation?.is_demo || h.geolocation?.evidence_type === 'demo';
-                return (
-                  <tr key={h.id}>
-                    <td className="mono">{h.ip_address}</td>
-                    <td className="mono">{h.domain || '—'}</td>
-                    <td>{h.vendor_name || '—'}</td>
-                    <td>
-                      <span className={`scan-mode-badge ${isDemo ? 'demo' : 'real'}`}>
-                        {isDemo ? 'DEMO' : 'REAL'}
-                      </span>
-                    </td>
-                    <td className="mono">#{h.scan_job_id || '—'} {h.scan_target_domain || ''}</td>
-                    <td className="text-sm text-muted">{formatDateTime(h.scan_created_at || h.created_at)}</td>
-                    <td>
-                      <span className={h.vulnerability_count > 0 ? 'badge badge-high' : 'badge badge-low'}>
-                        {h.vulnerability_count || 0}
-                      </span>
-                    </td>
-                    <td>{h.geolocation.city || '—'}</td>
-                    <td className="text-muted text-sm mono">
-                      {h.geolocation.lat?.toFixed(4)}, {h.geolocation.lon?.toFixed(4)}
-                    </td>
-                  </tr>
-                );
-              })}
+              {mappableHosts.map((h) => (
+                <tr key={h.id}>
+                  <td className="mono">{h.ip_address}</td>
+                  <td className="mono">{h.domain || '—'}</td>
+                  <td>{h.vendor_name || '—'}</td>
+                  <td className="mono">#{h.scan_job_id || '—'} {h.scan_target_domain || ''}</td>
+                  <td className="text-sm text-muted">{formatDateTime(h.scan_created_at || h.created_at)}</td>
+                  <td>
+                    <span className={h.vulnerability_count > 0 ? 'badge badge-high' : 'badge badge-low'}>
+                      {h.vulnerability_count || 0}
+                    </span>
+                  </td>
+                  <td>{h.geolocation.city || '—'}</td>
+                  <td className="text-muted text-sm mono">
+                    {h.geolocation.lat?.toFixed(4)}, {h.geolocation.lon?.toFixed(4)}
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         ) : (

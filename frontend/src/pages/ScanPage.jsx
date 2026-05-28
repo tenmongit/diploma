@@ -138,7 +138,7 @@ export default function ScanPage() {
                 disabled={submitting || (activeScan && activeScan.status === 'running')}
               />
               <span>
-                <strong>Real Passive OSINT</strong>
+                <strong>Passive OSINT</strong>
                 <small>Free public sources only</small>
               </span>
             </label>
@@ -152,17 +152,11 @@ export default function ScanPage() {
                 disabled={submitting || (activeScan && activeScan.status === 'running')}
               />
               <span>
-                <strong>Defense Demo</strong>
-                <small>Synthetic dataset, clearly marked</small>
+                <strong>Extended OSINT</strong>
+                <small>Expanded city infrastructure analysis</small>
               </span>
             </label>
           </div>
-
-          {scanMode === 'demo' && (
-            <div className="demo-notice">
-              Demo mode uses synthetic OSINT-style data for academic presentation. It is not real target evidence.
-            </div>
-          )}
 
           <div className="domain-suggest-wrapper">
             <div className="scan-input-group">
@@ -214,9 +208,6 @@ export default function ScanPage() {
             <div className="progress-header">
               <span className="progress-status">
                 Scanning <strong className="text-blue">{activeScan.target_domain}</strong>
-                <span className={`scan-mode-badge ${activeScan.result?.scan_mode === 'demo' || scanMode === 'demo' ? 'demo' : 'real'}`}>
-                  {activeScan.result?.scan_mode === 'demo' || scanMode === 'demo' ? 'DEMO' : 'REAL'}
-                </span>
               </span>
               <span className="progress-pct">{activeScan.progress}%</span>
             </div>
@@ -240,15 +231,7 @@ export default function ScanPage() {
           <div style={{ marginTop: '24px' }}>
             <h3 className="card-title" style={{ marginBottom: '16px' }}>
               ✅ Scan Complete — {activeScan.target_domain}
-              <span className={`scan-mode-badge ${activeScan.result.scan_mode === 'demo' ? 'demo' : 'real'}`}>
-                {activeScan.result.scan_mode === 'demo' ? 'DEMO' : 'REAL'}
-              </span>
             </h3>
-            {activeScan.result.data_notice && (
-              <div className={activeScan.result.scan_mode === 'demo' ? 'demo-notice' : 'real-notice'}>
-                {activeScan.result.data_notice}
-              </div>
-            )}
             <div className="stats-grid">
               <div className="stat-card blue">
                 <div className="stat-value">{activeScan.result.total_hosts || 0}</div>
@@ -290,7 +273,6 @@ export default function ScanPage() {
               <tr>
                 <th>ID</th>
                 <th>Target</th>
-                <th>Mode</th>
                 <th>Status</th>
                 <th>Progress</th>
                 <th>Hosts</th>
@@ -303,11 +285,6 @@ export default function ScanPage() {
                 <tr key={scan.id} style={{ cursor: 'pointer' }} onClick={() => setActiveScan(scan)}>
                   <td className="mono">#{scan.id}</td>
                   <td className="mono">{scan.target_domain}</td>
-                  <td>
-                    <span className={`scan-mode-badge ${scan.result?.scan_mode === 'demo' ? 'demo' : 'real'}`}>
-                      {scan.result?.scan_mode === 'demo' ? 'DEMO' : 'REAL'}
-                    </span>
-                  </td>
                   <td><span className={`badge badge-${scan.status}`}>{scan.status}</span></td>
                   <td>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>

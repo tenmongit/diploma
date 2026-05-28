@@ -77,7 +77,7 @@ class ShodanCollector(BaseCollector):
         """
         query = f'hostname:"{target}"'
         logger.info(f"[Shodan] Domain lookup: {query}")
-        return self._execute_query(query, description=f"hostname:{target}")
+        return self._execute_query_with_backoff(query, description=f"hostname:{target}")
 
     def collect_for_city(self, city: str) -> list[dict[str, Any]]:
         """

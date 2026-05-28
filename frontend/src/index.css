@@ -811,11 +811,6 @@ a:hover {
   box-shadow: 0 0 0 3px var(--accent-blue-glow);
 }
 
-.scan-mode-option.demo.active {
-  border-color: rgba(139, 92, 246, 0.6);
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
-}
-
 .scan-mode-option input {
   accent-color: var(--accent-blue);
 }
@@ -829,26 +824,6 @@ a:hover {
 .scan-mode-option small {
   color: var(--text-muted);
   margin-top: 2px;
-}
-
-.demo-notice,
-.real-notice {
-  padding: var(--space-md);
-  border-radius: var(--radius-md);
-  margin-bottom: var(--space-md);
-  font-size: 0.9rem;
-}
-
-.demo-notice {
-  background: rgba(139, 92, 246, 0.12);
-  border: 1px solid rgba(139, 92, 246, 0.35);
-  color: #c4b5fd;
-}
-
-.real-notice {
-  background: rgba(16, 185, 129, 0.12);
-  border: 1px solid rgba(16, 185, 129, 0.3);
-  color: #86efac;
 }
 
 .domain-suggest-wrapper {
@@ -882,30 +857,6 @@ a:hover {
 .domain-suggestion-item:hover {
   background: rgba(59, 130, 246, 0.18);
   color: #bfdbfe;
-}
-
-.scan-mode-badge {
-  display: inline-flex;
-  align-items: center;
-  margin-left: var(--space-sm);
-  padding: 2px 8px;
-  border-radius: 999px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  vertical-align: middle;
-}
-
-.scan-mode-badge.real {
-  background: rgba(16, 185, 129, 0.15);
-  color: #86efac;
-  border: 1px solid rgba(16, 185, 129, 0.35);
-}
-
-.scan-mode-badge.demo {
-  background: rgba(139, 92, 246, 0.17);
-  color: #c4b5fd;
-  border: 1px solid rgba(139, 92, 246, 0.45);
 }
 
 /* ── Risk Explanation Page ───────────────────────────────── */

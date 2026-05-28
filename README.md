@@ -1,84 +1,65 @@
 # SmartCity OSINT Platform
 
-A scalable, distributed web application for automated discovery, classification, and mapping of privacy threats in Smart City infrastructure.
+This repository contains the source code for the **SmartCity OSINT Platform**, a passive infrastructure and privacy threat mapping tool for Smart Cities.
 
-## Architecture
+## Project Description
 
-- **Backend**: Python 3.11 + FastAPI (async API)
-- **Frontend**: React 18 + Vite + Leaflet.js
-- **Database**: PostgreSQL 15 (with JSONB)
-- **Task Queue**: Celery + Redis
-- **Containerization**: Docker Compose
+The SmartCity OSINT Platform is an asynchronous, scalable system designed to automatically discover, classify, and evaluate exposed infrastructure in Smart City environments (e.g., Astana, Almaty). It utilizes passive OSINT sources to map connected devices (IoT gateways, surveillance cameras, SCADA systems) without actively probing or interfering with the operational technology.
 
-## Quick Start
+### Architecture
 
-```bash
-# 1. Copy environment file
-cp .env.example .env
+The system is built on a modern, containerized technology stack:
+- **Backend:** FastAPI (Python) for high-performance async API endpoints.
+- **Frontend:** React + Vite for a responsive, dashboard-driven user interface.
+- **Database:** PostgreSQL for robust relational data storage of assets and vulnerabilities.
+- **Task Queue:** Celery + Redis for asynchronous processing of long-running OSINT scans.
+- **Deployment:** Docker & Docker Compose for seamless cross-platform environments.
 
-# 2. Start all services
-docker compose up -d --build
+## Prerequisites
 
-# 3. Access the application
-# Frontend: http://localhost:3000
-# API Docs: http://localhost:8000/docs
-# Default login: admin / admin123
-```
+To run this platform locally, you must have the following installed on your system:
+- [Docker](https://docs.docker.com/get-docker/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+
+## Demonstration Mode (Quick Start)
+
+The following instructions will start the platform in "Demonstration Mode", which seeds the database with synthetic data representing the exact findings presented in the project's Experimental Results (Chapter 3) and Appendices.
+
+1. **Configure Environment:**
+   Copy the example environment file. The default settings are safe for demonstration and require no API keys.
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Start Services:**
+   Use Docker Compose to build and start all required containers in detached mode.
+   ```bash
+   docker compose up --build -d
+   ```
+
+3. **Seed Synthetic Data:**
+   Run the data seeding script within the backend container. This populates the database with exact thesis metrics (34 hosts, 71 services, 84 vulnerabilities across Astana and Almaty).
+   ```bash
+   docker compose exec backend python seed_demo_data.py
+   ```
+
+## Accessing the Platform
+
+Once the services are running and data is seeded, you can access the platform through your web browser:
+
+- **Frontend Dashboard:** [http://localhost:3000](http://localhost:3000)
+- **FastAPI Swagger UI (API Docs):** [http://localhost:8000/docs](http://localhost:8000/docs)
+
+### Default Credentials
+Log in to the Frontend Dashboard using the default administrator credentials:
+- **Username:** `admin`
+- **Password:** `admin123`
 
 ## Project Structure
 
-```
-diploma/
-├── docker-compose.yml
-├── .env.example
-├── Makefile
-├── backend/
-│   ├── Dockerfile
-│   ├── requirements.txt
-│   ├── alembic.ini
-│   ├── alembic/           # Database migrations
-│   └── app/
-│       ├── main.py         # FastAPI app factory
-│       ├── core/           # Config, security
-│       ├── db/             # Models, database
-│       ├── api/            # REST API routes
-│       ├── schemas/        # Pydantic models
-│       ├── osint/          # OSINT collectors
-│       ├── engine/         # Classification & scoring
-│       └── tasks/          # Celery tasks
-└── frontend/
-    ├── Dockerfile
-    ├── package.json
-    └── src/
-        ├── App.jsx         # Root component + routing
-        ├── index.css       # Design system
-        ├── api/            # Axios client
-        ├── context/        # Auth context
-        ├── components/     # Layout, shared components
-        └── pages/          # Dashboard, Map, Scan, Hosts, Reports
-```
+- `backend/`: FastAPI application, Celery tasks, SQLAlchemy models, and database seeding scripts.
+- `frontend/`: React components, pages, context, and Vite configuration.
+- `diploma_artifacts/`: Supplementary academic materials, generated reports, and diagrams.
 
-## Makefile Commands
-
-```bash
-make up        # Start all services
-make down      # Stop all services
-make logs      # Follow all logs
-make logs-api  # Follow API logs only
-make migrate   # Run DB migrations
-make restart   # Restart API + Worker
-make clean     # Remove everything including volumes
-```
-
-## OSINT Modules
-
-| Module | Source | API Key Required |
-|--------|--------|-----------------|
-| Shodan | `app/osint/shodan_collector.py` | Yes (optional for demo) |
-| Censys | `app/osint/censys_collector.py` | Yes (optional for demo) |
-| crt.sh | `app/osint/crtsh_collector.py` | No (public API) |
-| DNS    | `app/osint/dns_enum.py`        | No |
-
-## API Documentation
-
-Once running, visit `http://localhost:8000/docs` for the interactive Swagger UI.
+## Disclaimer
+This software was developed for academic and demonstration purposes as part of a diploma project. All data generated in "Demonstration Mode" is synthetic and any resemblance to actual vulnerable infrastructure is illustrative.

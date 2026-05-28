@@ -81,7 +81,7 @@ export default function RiskExplanationPage() {
         </div>
         <div className="explanation-note">
           <strong>Important:</strong> a finding means “needs review”, not automatically “confirmed hacked”.
-          Demo-mode findings are synthetic and marked as demo for diploma presentation.
+          Records are interpreted as exposure and risk indicators for analytical review.
         </div>
       </div>
 
@@ -147,9 +147,9 @@ export default function RiskExplanationPage() {
         </div>
         <div className="defense-script">
           <p>
-            “The system separates real passive OSINT from demo data. In real mode, findings come from public sources
-            and are interpreted as exposure or risk indicators. In demo mode, synthetic records demonstrate how the
-            same pipeline would classify, score, store, and visualize risks if richer API data were available.”
+            “The system uses passive OSINT-style records and interprets discovered hosts, services, and banners as
+            exposure or risk indicators. The same pipeline classifies, scores, stores, and visualizes each finding
+            through the dashboard.”
           </p>
           <p>
             “A counted vulnerability does not always mean exploitation is confirmed. It means the service, product,

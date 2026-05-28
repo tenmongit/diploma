@@ -1,0 +1,45 @@
+category,metric,value,notes
+snapshot,total_scan_jobs,19,Local PostgreSQL scan_jobs rows
+snapshot,completed_scans,19,All local scan jobs completed
+snapshot,total_host_rows,50,hosts table rows; includes repeated IPs across scans
+snapshot,unique_ip_addresses,34,COUNT(DISTINCT hosts.ip_address)
+snapshot,total_services,71,services table rows available for classification evidence
+snapshot,total_vulnerabilities,84,vulnerabilities table rows; CVE findings can create multiple rows per service
+snapshot,total_vendors,15,vendors table rows
+snapshot,average_completed_scan_seconds,58,Average updated_at-created_at for completed scans
+severity,critical,37,44.0% of vulnerability rows
+severity,high,15,17.9% of vulnerability rows
+severity,medium,15,17.9% of vulnerability rows
+severity,low,17,20.2% of vulnerability rows
+latest_controlled_scan,scan_id,19,Target almaty.gov.kz; internal scan_mode demo
+latest_controlled_scan,hosts,18,18 unique host coordinates in this city-focused run
+latest_controlled_scan,services,26,Services persisted for scan 19
+latest_controlled_scan,vulnerabilities,32,Vulnerability rows persisted for scan 19
+latest_controlled_scan,critical,18,56.3% of scan 19 vulnerability rows
+latest_controlled_scan,high,6,18.8% of scan 19 vulnerability rows
+latest_controlled_scan,medium,5,15.6% of scan 19 vulnerability rows
+latest_controlled_scan,low,3,9.4% of scan 19 vulnerability rows
+classification,HTTPS Service,10,services.classification count
+classification,Surveillance Node,10,services.classification count
+classification,IoT MQTT Broker,7,services.classification count
+classification,Camera Web UI,6,services.classification count
+classification,IoT Gateway,6,services.classification count
+classification,SCADA/Modbus Endpoint,6,services.classification count
+classification,Embedded Web Server,5,services.classification count
+classification,Sergek Dashboard,5,services.classification count
+classification,Telnet Service (Insecure),5,services.classification count
+port,554/tcp,12,Most common service port/protocol
+port,80/tcp,9,Second most common TCP service
+port,80/http,8,HTTP protocol-labeled services
+port,443/tcp,8,HTTPS port records
+port,1883/tcp,7,MQTT services
+port,502/tcp,6,Modbus services
+city,Almaty,23,hosts.geolocation city count
+city,Astana,19,hosts.geolocation city count
+city,Unknown,8,hosts without city geolocation
+finding_type,privacy-risk,41,Vulnerability rows without CVE ID
+finding_type,CVE-2017-7921,11,Hikvision indicator mapping
+finding_type,CVE-2021-36260,11,Hikvision indicator mapping
+finding_type,CVE-2017-17562,8,GoAhead indicator mapping
+finding_type,CVE-2021-33044,7,Dahua indicator mapping
+finding_type,CVE-2020-25078,6,Dahua indicator mapping

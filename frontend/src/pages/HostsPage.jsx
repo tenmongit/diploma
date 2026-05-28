@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import client from '../api/client';
 
 export default function HostsPage() {
@@ -7,6 +7,7 @@ export default function HostsPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [vendorFilter, setVendorFilter] = useState('');
+  const [severityFilter, setSeverityFilter] = useState('');
   const [expandedHost, setExpandedHost] = useState(null);
   const [hostDetail, setHostDetail] = useState(null);
 
@@ -50,6 +51,7 @@ export default function HostsPage() {
       const params = { limit: 200 };
       if (search) params.search = search;
       if (vendorFilter) params.vendor_id = vendorFilter;
+      if (severityFilter) params.severity = severityFilter;
       const res = await client.get('/api/hosts', { params });
       setHosts(res.data);
     } catch (err) {
@@ -62,7 +64,7 @@ export default function HostsPage() {
   useEffect(() => {
     const timer = setTimeout(applyFilters, 400);
     return () => clearTimeout(timer);
-  }, [search, vendorFilter]);
+  }, [search, vendorFilter, severityFilter]);
 
   const getSeverityBadge = (score) => {
     if (score >= 9) return <span className="badge badge-critical">Critical</span>;
@@ -98,6 +100,17 @@ export default function HostsPage() {
               <option key={v.id} value={v.id}>{v.name}</option>
             ))}
           </select>
+          <select
+            className="filter-select"
+            value={severityFilter}
+            onChange={(e) => setSeverityFilter(e.target.value)}
+          >
+            <option value="">All Severities</option>
+            <option value="critical">Critical</option>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+          </select>
           <span className="text-sm text-muted">{hosts.length} hosts found</span>
         </div>
       </div>
@@ -116,17 +129,25 @@ export default function HostsPage() {
                 <th>IP Address</th>
                 <th>Domain</th>
                 <th>Vendor</th>
+                <th>Severity</th>
                 <th>Location</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               {hosts.map((host) => (
-                <>
-                  <tr key={host.id} onClick={() => fetchHostDetail(host.id)} style={{ cursor: 'pointer' }}>
+                <Fragment key={host.id}>
+                  <tr onClick={() => fetchHostDetail(host.id)} style={{ cursor: 'pointer' }}>
                     <td className="mono">{host.ip_address}</td>
                     <td className="mono">{host.domain || '—'}</td>
                     <td>{host.vendor_name || '—'}</td>
+                    <td>
+                      {host.max_severity ? (
+                        <span className={`badge badge-${host.max_severity}`}>
+                          {host.max_severity}
+                        </span>
+                      ) : '—'}
+                    </td>
                     <td className="text-sm text-muted">
                       {host.geolocation?.city || '—'}, {host.geolocation?.country || ''}
                     </td>
@@ -138,7 +159,7 @@ export default function HostsPage() {
                   </tr>
                   {expandedHost === host.id && hostDetail && (
                     <tr key={`${host.id}-detail`}>
-                      <td colSpan="5" style={{ padding: '0 16px 16px' }}>
+                      <td colSpan="6" style={{ padding: '0 16px 16px' }}>
                         <div style={{ background: 'var(--bg-secondary)', borderRadius: 'var(--radius-md)', padding: '16px' }}>
                           {/* Services */}
                           <h4 style={{ marginBottom: '12px', color: 'var(--accent-blue)' }}>
@@ -182,7 +203,7 @@ export default function HostsPage() {
                                   <th>Title</th>
                                   <th>CVE</th>
                                   <th>Privacy Risk</th>
-                                  <th>Score</th>
+                                  <th>CVSS/LINDDUN Score</th>
                                   <th>Severity</th>
                                 </tr>
                               </thead>
@@ -203,7 +224,7 @@ export default function HostsPage() {
                       </td>
                     </tr>
                   )}
-                </>
+                </Fragment>
               ))}
             </tbody>
           </table>
@@ -212,7 +233,7 @@ export default function HostsPage() {
             <div className="empty-icon">🖥️</div>
             <h3>No hosts found</h3>
             <p className="text-sm">
-              {search || vendorFilter
+              {search || vendorFilter || severityFilter
                 ? 'Try adjusting your filters'
                 : 'Run a scan to discover hosts'}
             </p>
