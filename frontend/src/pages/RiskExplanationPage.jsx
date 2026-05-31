@@ -72,15 +72,15 @@ export default function RiskExplanationPage() {
 
       <div className="card explanation-hero">
         <div>
-          <h3>What does “vulnerability” mean in this platform?</h3>
+          <h3>What does "vulnerability" mean in this platform?</h3>
           <p>
-            In this project, a finding can be a technical vulnerability, a privacy risk, or an exposure indicator.
-            The platform does not actively attack or probe systems. It uses passive OSINT records and then explains
-            why a discovered host or service may deserve attention.
+            In this platform, a finding can be a technical vulnerability, a privacy risk, or an exposure indicator.
+            The system uses passive OSINT records and interprets discovered hosts, services, and banners as
+            exposure or risk indicators. It does not actively attack or probe target systems.
           </p>
         </div>
         <div className="explanation-note">
-          <strong>Important:</strong> a finding means “needs review”, not automatically “confirmed hacked”.
+          <strong>Important:</strong> a finding means "needs review", not automatically "confirmed hacked".
           Records are interpreted as exposure and risk indicators for analytical review.
         </div>
       </div>
@@ -143,17 +143,17 @@ export default function RiskExplanationPage() {
 
       <div className="card" style={{ marginTop: '24px' }}>
         <div className="card-header">
-          <h3 className="card-title">How to explain this during defense</h3>
+          <h3 className="card-title">Methodology summary</h3>
         </div>
         <div className="defense-script">
           <p>
-            “The system uses passive OSINT-style records and interprets discovered hosts, services, and banners as
+            The platform uses passive OSINT-style records and interprets discovered hosts, services, and banners as
             exposure or risk indicators. The same pipeline classifies, scores, stores, and visualizes each finding
-            through the dashboard.”
+            through the dashboard.
           </p>
           <p>
-            “A counted vulnerability does not always mean exploitation is confirmed. It means the service, product,
-            protocol, or privacy context matches known risk patterns and should be reviewed by responsible administrators.”
+            A counted vulnerability does not always mean exploitation is confirmed. It means the service, product,
+            protocol, or privacy context matches known risk patterns and should be reviewed by responsible administrators.
           </p>
         </div>
       </div>
